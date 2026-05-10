@@ -42,6 +42,32 @@ public class Vehicle {
         return this.dailyRate * days;
     }
 
+    public String getLicensePlate() {
+        return this.licensePlate;
+    }
 
+    public String getBrand() {
+        return this.brand;
+    }
+
+    public String getModel() {
+        return this.model;
+    }
+
+    public double getDailyRate() {
+        return this.dailyRate;
+    }
+
+    public boolean isRented() {
+        return this.isRented;
+    }
+
+    public void setDailyRate(double newDailyRate) {
+        if (newDailyRate <= 0) {
+            System.out.println("Error: Daily Rate must be greater than zero.");
+        } else {
+            this.dailyRate = newDailyRate;
+        }
+    }
 
 }
