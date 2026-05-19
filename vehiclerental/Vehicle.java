@@ -5,13 +5,15 @@ public class Vehicle {
     private String brand;
     private String model;
     private double dailyRate;
+    private double mileage;
     private boolean isRented;
 
-    public Vehicle(String licensePlate, String brand, String model, double dailyRate) {
+    public Vehicle(String licensePlate, String brand, String model, double dailyRate, double mileage) {
         this.licensePlate = licensePlate;
         this.brand = brand;
         this.model = model;
         this.dailyRate = dailyRate;
+        this.mileage = mileage;
         // A car just purchased by the agency is not already rented, so we set isRented to false by default.
         this.isRented = false;
     }
@@ -25,13 +27,21 @@ public class Vehicle {
         }
     }
 
-    public void returnVehicle() {
+    public void returnVehicle(double newKilometers) {
         if (!this.isRented) {
             System.out.println("Error: The vehicle " + this.brand + " " + this.model + " is not currently rented!");
-        } else {
-            this.isRented = false;
-            System.out.println("Vehicle returned successfully!");
+            return;
         }
+
+        if (newKilometers < 0) {
+            System.out.println("Error: You cannot add negative kilometers!");
+            return;
+        }
+
+        this.isRented = false;
+        this.mileage += newKilometers;
+
+        System.out.println("Vehicle returned successfully! New total mileage: " + this.mileage);
     }
 
     public double calculateRentalCost(int days) {
@@ -58,12 +68,16 @@ public class Vehicle {
         return this.dailyRate;
     }
 
+    public double getMileage() {
+        return this.mileage;
+    }
+
     public boolean isRented() {
         return this.isRented;
     }
 
     public void setDailyRate(double newDailyRate) {
-        if (newDailyRate <= 0) {
+        if (newDailyRate <= 0.0) {
             System.out.println("Error: Daily Rate must be greater than zero.");
         } else {
             this.dailyRate = newDailyRate;
