@@ -54,6 +54,17 @@ public class Room {
         return this.devices;
     }
 
+    public SmartDevice getDeviceByName(String deviceName) {
+        for (SmartDevice d : this.devices) {
+            String currentDeviceName = d.getDeviceName();
+            
+            if (currentDeviceName.equalsIgnoreCase(deviceName)) {
+                return d;
+            }
+        }
+        return null;
+    }
+
     public void setName(String newRoomName) {
         this.name = newRoomName;
     }

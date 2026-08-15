@@ -39,9 +39,10 @@ public class Menu {
                     break;
                 
                 case 2:
-                    System.out.println("   Type the name of the room you want to add: ");
+                    System.out.print("   Type the name of the room you want to add: ");
                     String roomName = this.scanner.nextLine();
 
+                    System.out.print("\n");
                     if (roomName.isBlank()) {
                         System.out.println("   Error: Cannot add a room with an empty name");
                         break;
@@ -52,9 +53,10 @@ public class Menu {
                     break;
 
                 case 3: 
-                    System.out.println("   Type the name of the room you want to remove: ");
+                    System.out.print("   Type the name of the room you want to remove: ");
                     roomName = this.scanner.nextLine();
 
+                    System.out.print("\n");
                     if (roomName.isBlank()) {
                         System.out.println("   Error: Cannot remove a room with an empty name");
                         break;
@@ -80,9 +82,10 @@ public class Menu {
                     break;
 
                 case 6:
-                    System.out.println("   Type the name of the room you want to enter: ");
+                    System.out.print("   Type the name of the room you want to enter: ");
                     roomName = this.scanner.nextLine();
 
+                    System.out.print("\n");
                     if (roomName.isBlank()) {
                         System.out.println("   Error: Cannot enter a room with an empty name");
                         break;
@@ -108,21 +111,161 @@ public class Menu {
         List<Room> rooms = this.home.getRooms();
 
         if (rooms.isEmpty()) {
-            System.out.println("Currently, the home has no rooms");
+            System.out.println("   Currently, the home has no rooms");
             return;
         }
 
         char index = 'a';
-        System.out.println("--- List of rooms ---");
+        System.out.println("   --- List of rooms --- ");
 
         for (Room r : rooms) {
-            System.out.println(index + ") " + r.getName());
+            System.out.println("   " + index + ") " + r.getName());
             index++;
         }
     }
 
     public void roomSubMenu(Room room) {
-        
+
+        boolean inRoom = true;
+
+        while (inRoom) {
+
+            System.out.println("\n   --- " + room.getName() + " management ---");
+            System.out.println("\n");
+            System.out.println("******************************************************************");
+            System.out.println("*   1. Show the list of all smart devices in this room           *");
+            System.out.println("*   2. Turn on/off a specific device                             *");
+            System.out.println("*   3. Add a new device                                          *");
+            System.out.println("*   4. Remove a device                                           *");
+            System.out.println("*   0. Return to the main menu                                   *");
+            System.out.println("******************************************************************");
+
+            int choice = scanner.nextInt();
+            scanner.nextLine();
+
+            switch(choice) {
+                case 1:
+                    List<SmartDevice> smartDevices = room.getDevices();
+                    char index = 'a';
+
+                    if (smartDevices.isEmpty()) {
+                        System.out.println("   There are no smart devices in this room yet");
+                        break;
+                    }
+
+                    for (SmartDevice d : smartDevices) {
+                        System.out.print("   " + index + ") " + d.getDeviceName());
+                        if (d.isOn()) {
+                            System.out.print(" [ON]");
+                        } else {
+                            System.out.print(" [OFF]");
+                        }
+
+                        System.out.print("\n");
+                        index++;
+                    }
+                    break;
+
+                case 2:
+                    smartDevices = room.getDevices();
+
+                    if (smartDevices.isEmpty()) {
+                        System.out.println("   There are no smart devices in this room yet");
+                        break;
+                    }
+
+                    System.out.print("   Type the name of the smart device you want to turn on/off: ");
+                    String smartDeviceName = this.scanner.nextLine();
+
+                    System.out.print("\n");
+                    if (smartDeviceName.isBlank()) {
+                        System.out.println("   Error: Cannot turn on/off a device with an empty name");
+                        break;
+                    }
+
+                    SmartDevice target = room.getDeviceByName(smartDeviceName);
+
+                    if (target == null) {
+                        System.out.println("   Error: There is no device with this name in this room");
+                        break;
+                    }
+                    
+                    if (target.isOn()) {
+                        target.turnOff();
+                        System.out.println("   " + smartDeviceName + " turned off successfully!");
+                    } else {
+                        target.turnOn();
+                        System.out.println("   " + smartDeviceName + " turned on successfully!");
+                    }
+                    break;
+                
+                case 3:
+                    System.out.print("\n   Type 1 to add a Smart TV, 2 to add a Smart Light or 3 to add a Smart Thermostat: ");
+                    String chosenNumber = this.scanner.nextLine();
+
+                    System.out.print("\n");
+                    
+                    double powerConsumption = 0.0;
+
+                    switch(chosenNumber) {
+                        case "1":
+                            System.out.print("   Type the name of the Smart TV: ");
+                            String tvName = this.scanner.nextLine();
+
+                            System.out.print("\n\n");
+                            System.out.print("   Type the power consumption of the Smart TV: ");
+                            powerConsumption = this.scanner.nextDouble();
+                            this.scanner.nextLine();
+
+                            System.out.print("\n\n");
+                            SmartDevice newTv = new SmartTV(tvName, powerConsumption);
+
+                            room.addDevice(newTv);
+                            System.out.println("   Success: Smart TV Added!");
+                            break;
+
+                        case "2":
+                            System.out.print("   Type the name of the Smart Light: ");
+                            String lightName = this.scanner.nextLine();
+
+                            System.out.print("\n\n");
+                            System.out.print("   Type the power consumption of the Smart Light: ");
+                            powerConsumption = this.scanner.nextDouble();
+                            this.scanner.nextLine();
+
+                            System.out.print("\n\n");
+                            SmartDevice newLight = new SmartLight(lightName, powerConsumption);
+
+                            room.addDevice(newLight);
+                            System.out.println("   Success: Smart Light Added!");
+                            break;
+
+                        case "3":
+                            System.out.print("   Type the name of the Smart Thermostat: ");
+                            String thermostatName = this.scanner.nextLine();
+
+                            System.out.print("\n\n");
+                            System.out.print("   Type the power consumption of the Smart Thermostat: ");
+                            powerConsumption = this.scanner.nextDouble();
+                            this.scanner.nextLine();
+
+                            System.out.print("\n\n");
+                            SmartDevice newThermostat = new SmartThermostat(thermostatName, powerConsumption);
+
+                            room.addDevice(newThermostat);
+                            System.out.println("   Success: Smart Thermostat Added!");
+                            break;
+
+                        default:
+                            System.out.println("   Invalid choice: you must type 1, 2 or 3");
+                            break;
+                    }
+                    break;
+                
+                case 4:
+                    
+            }
+        }
     }
     
 
