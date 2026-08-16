@@ -1,6 +1,7 @@
 package smarthome;
 import java.util.List;
 import java.util.Scanner;
+import java.util.Locale;
 
 public class Menu {
     private Home home;
@@ -9,6 +10,7 @@ public class Menu {
     public Menu(Home home) {
         this.home = home;
         this.scanner = new Scanner(System.in);
+        this.scanner.useLocale(Locale.US);
     }
 
     public void start() {
@@ -16,6 +18,7 @@ public class Menu {
         boolean running = true;
 
         while (running) {
+            System.out.print("\n\n\n");
 
             System.out.println("   WELCOME TO THIS BEAUTIFUL, BRAND-NEW HOME! WHAT WOULD YOU LIKE TO DO?   ");
             System.out.println("\n");
@@ -139,6 +142,7 @@ public class Menu {
         SmartDevice target;
 
         while (inRoom) {
+            System.out.print("\n\n\n");
 
             System.out.println("\n   --- " + room.getName() + " management ---");
             System.out.println("\n");

@@ -6,8 +6,8 @@ public class SmartThermostat extends SmartDevice {
 
     public SmartThermostat(String name, double powerConsumption) {
         super(name, powerConsumption);
-        this.currentTemperature = 20.0;
-        this.desiredTemperature = 20.0;
+        this.currentTemperature = 18.0;
+        this.desiredTemperature = 22.0;
     }
 
     public double getDailyConsumption() {
