@@ -11,22 +11,16 @@ public class Room {
         this.devices = new ArrayList<>();
     }
 
-    public void addDevice(SmartDevice device) {
-        if (!this.devices.contains(device)) {
-            this.devices.add(device);
-            System.out.println("Smart Device added successfully");
-        } else {
-            System.out.println("Error: this device already exists in this room");
+    public boolean addDevice(SmartDevice device) {
+        if (this.devices.contains(device)) {
+            return false;
         }
+        this.devices.add(device);
+        return true;
     }
 
-    public void removeDevice(SmartDevice device) {
-        if (!this.devices.contains(device)) {
-            System.out.println("Error: this device doesn't exist in this room");
-        } else {
-            this.devices.remove(device);
-            System.out.println("Smart Device removed successfully");
-        }
+    public boolean removeDevice(SmartDevice device) {
+       return this.devices.remove(device); 
     }
 
     public double getRoomPowerConsumption() {

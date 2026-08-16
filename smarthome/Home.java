@@ -5,25 +5,26 @@ import java.util.ArrayList;
 public class Home {
     private List<Room> rooms;
 
-
-    public void addRoom(Room r) {
-
-        if (this.rooms.contains(r)) {
-            System.out.println("Error: there is already a " + r.getName() + " in the home");
-        } else {
-            this.rooms.add(r);
-            System.out.println(r.getName() + " successfully added to the home");
-        }
+    public Home() {
+        this.rooms = new ArrayList<>();
     }
 
-    public void removeRoom(Room r) {
+    public boolean addRoom(Room r) {
+
+        if (getRoomByName(r.getName()) != null) {
+            return false;
+        }
+        this.rooms.add(r);
+        return true;
+    }
+
+    public boolean removeRoom(Room r) {
 
         if (!this.rooms.contains(r)) {
-            System.out.println("Error: there is no " + r.getName() + " in the home");
-        } else {
-            this.rooms.remove(r);
-            System.out.println(r.getName() + " successfully removed from the home");
+            return false;
         }
+        this.rooms.remove(r);
+        return true;
     }
 
     public double getTotalPowerConsumption() {

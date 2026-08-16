@@ -1,6 +1,5 @@
 package smarthome;
 import java.util.List;
-import java.util.ArrayList;
 import java.util.Scanner;
 
 public class Menu {
@@ -49,7 +48,11 @@ public class Menu {
                     }
 
                     Room newRoom = new Room(roomName);
-                    this.home.addRoom(newRoom);
+                    if (this.home.addRoom(newRoom)) {
+                        System.out.println("   " + roomName + " added successfully!");
+                    } else {
+                        System.out.println("   Error: Could not add the room");
+                    }
                     break;
 
                 case 3: 
@@ -68,7 +71,11 @@ public class Menu {
                         break;
                     }
 
-                    this.home.removeRoom(roomToBeRemoved);
+                    if (this.home.removeRoom(roomToBeRemoved)) {
+                        System.out.println("   " + roomName + " removed successfully!");
+                    } else {
+                        System.out.println("   Error: Could not remove the room");
+                    }
                     break;
 
                 case 4:
@@ -127,6 +134,9 @@ public class Menu {
     public void roomSubMenu(Room room) {
 
         boolean inRoom = true;
+        List<SmartDevice> smartDevices = room.getDevices();
+        String smartDeviceName;
+        SmartDevice target;
 
         while (inRoom) {
 
@@ -145,7 +155,6 @@ public class Menu {
 
             switch(choice) {
                 case 1:
-                    List<SmartDevice> smartDevices = room.getDevices();
                     char index = 'a';
 
                     if (smartDevices.isEmpty()) {
@@ -167,15 +176,13 @@ public class Menu {
                     break;
 
                 case 2:
-                    smartDevices = room.getDevices();
-
                     if (smartDevices.isEmpty()) {
                         System.out.println("   There are no smart devices in this room yet");
                         break;
                     }
 
                     System.out.print("   Type the name of the smart device you want to turn on/off: ");
-                    String smartDeviceName = this.scanner.nextLine();
+                    smartDeviceName = this.scanner.nextLine();
 
                     System.out.print("\n");
                     if (smartDeviceName.isBlank()) {
@@ -183,7 +190,7 @@ public class Menu {
                         break;
                     }
 
-                    SmartDevice target = room.getDeviceByName(smartDeviceName);
+                    target = room.getDeviceByName(smartDeviceName);
 
                     if (target == null) {
                         System.out.println("   Error: There is no device with this name in this room");
@@ -220,8 +227,11 @@ public class Menu {
                             System.out.print("\n\n");
                             SmartDevice newTv = new SmartTV(tvName, powerConsumption);
 
-                            room.addDevice(newTv);
-                            System.out.println("   Success: Smart TV Added!");
+                            if (room.addDevice(newTv)) {
+                                System.out.println("   Success: Smart TV Added!");
+                            } else {
+                                System.out.println("   Error: Could not add the device");
+                            }
                             break;
 
                         case "2":
@@ -236,8 +246,11 @@ public class Menu {
                             System.out.print("\n\n");
                             SmartDevice newLight = new SmartLight(lightName, powerConsumption);
 
-                            room.addDevice(newLight);
-                            System.out.println("   Success: Smart Light Added!");
+                            if (room.addDevice(newLight)) {
+                                System.out.println("   Success: Smart Light Added!");
+                            } else {
+                                System.out.println("   Error: Could not add the device");
+                            }
                             break;
 
                         case "3":
@@ -252,8 +265,11 @@ public class Menu {
                             System.out.print("\n\n");
                             SmartDevice newThermostat = new SmartThermostat(thermostatName, powerConsumption);
 
-                            room.addDevice(newThermostat);
-                            System.out.println("   Success: Smart Thermostat Added!");
+                            if (room.addDevice(newThermostat)) {
+                                System.out.println("   Success: Smart Thermostat Added!");
+                            } else {
+                                System.out.println("   Error: Could not add the device");
+                            }
                             break;
 
                         default:
@@ -263,10 +279,38 @@ public class Menu {
                     break;
                 
                 case 4:
-                    
+                    if (smartDevices.isEmpty()) {
+                        System.out.println("   There are no smart devices in this room yet");
+                        break;
+                    }
+
+                    System.out.print("   Type the name of the smart device you want to remove: ");
+                    smartDeviceName = this.scanner.nextLine();
+
+                    System.out.print("\n");
+                    if (smartDeviceName.isBlank()) {
+                        System.out.println("   Error: Cannot remove a device with an empty name");
+                        break;
+                    }
+
+                    target = room.getDeviceByName(smartDeviceName);
+
+                    if (target == null) {
+                        System.out.println("   Error: There is no device with this name in this room");
+                        break;
+                    }
+
+                    if(room.removeDevice(target)) {
+                        System.out.println("   " + smartDeviceName + " removed successfully!");
+                    } else {
+                        System.out.println("   Error: Could not remove the device");
+                    }
+                    break;
+                
+                case 0:
+                    inRoom = false;
+                    break;
             }
         }
     }
-    
-
 }
